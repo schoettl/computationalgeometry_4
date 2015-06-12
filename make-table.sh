@@ -8,15 +8,15 @@ if [[ $# != 2 ]]; then
     exit 1
 fi
 
-echo "d $(seq -s' ' $2)"
+echo "dimension numberOfPoints time timeInSeconds"
 
 for d in $(seq $1); do
-	echo -n "$d "
 	for t in $(seq $2); do
 		n=$((t*1000))
+		echo -n "$d $n "
 		./qhull/bin/rbox "D$d" "$n" \
 		| time ./qhull/bin/qhull 2>&1 1>/dev/null \
-		| awk 'BEGIN{ORS=" "}/elapsed/{sub(/elapsed/, "", $3); print $3}'
+		| awk '/elapsed/{sub(/elapsed/, "", $3); print $3}' \
+		| awk -F: '{print $0 " " ($1*60 + $2)}'
 	done
-	echo
 done
