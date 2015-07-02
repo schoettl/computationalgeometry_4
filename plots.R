@@ -1,10 +1,25 @@
 library(ggplot2)
 library(reshape2)
 
-data = read.table("test-times.txt", header = TRUE)
-data
-str(data)
-datam = melt(data, id = "d")
-datam = transform(datam, dims = factor(d))
+plotTimes = function(data) {
+  qplot(numberOfPoints, timeInSeconds, data),
+        geom = c("point", "line"), color = dim,
+        main = "Quick Hull - calculation time over number of points",
+        xlab = "number of points", ylab = "time in seconds")
+}
 
-qplot(variable, value, data = datam, geom = c("point", "line"), color = dims)
+data = read.table("times.txt", header = TRUE)
+data = transform(data, dim = factor(dimension))
+data
+head(data)
+str(data)
+
+acast(data, dimension ~ numberOfPoints, value.var = "time")
+
+dimensionBreak = 5
+# alles andere ist schlecht, weil man dann die einzelnen linien
+# nicht mehr sieht (was köster letztes mal kritisiert hat)
+# also hinweis darauf, dass die diagramme unterschiedliche skalen haben
+
+plotTimes(subset(data, dimension < dimensionBreak))
+plotTimes(subset(data, dimension >= dimensionBreak))
