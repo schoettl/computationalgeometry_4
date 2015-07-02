@@ -2,7 +2,7 @@ library(ggplot2)
 library(reshape2)
 
 plotTimes = function(data) {
-  qplot(numberOfPoints, timeInSeconds, data),
+  qplot(numberOfPoints, timeInSeconds, data = data,
         geom = c("point", "line"), color = dim,
         main = "Quick Hull - calculation time over number of points",
         xlab = "number of points", ylab = "time in seconds")
