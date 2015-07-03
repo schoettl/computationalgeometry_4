@@ -8,9 +8,12 @@ if [[ $# != 2 ]]; then
     exit 1
 fi
 
+# print table headers
 echo "dimension numberOfPoints time timeInSeconds"
 
+# for dimensions
 for d in $(seq $1); do
+        # for number of points (thousands)
 	for t in $(seq $2); do
 		n=$((t*1000))
 		echo -n "$d $n "
